@@ -1,0 +1,7 @@
+breakdown,value,unit,n
+samples_per_project,prj1,samples,384
+samples_per_project,prj3,samples,272
+subjects_by_response,no,subjects,325
+subjects_by_response,yes,subjects,331
+subjects_by_sex,F,subjects,312
+subjects_by_sex,M,subjects,344

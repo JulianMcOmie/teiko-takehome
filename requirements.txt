@@ -1,0 +1,7 @@
+# Lower bounds rather than exact pins: these are all mature APIs and the pipeline
+# should install cleanly on whatever recent versions a fresh Codespace resolves.
+pandas>=2.0
+scipy>=1.10
+matplotlib>=3.7
+plotly>=5.9
+streamlit>=1.28

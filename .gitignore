@@ -1,0 +1,14 @@
+# Personal notes about the assignment, not part of the deliverable.
+background.html
+
+# The database is a build artifact: `make pipeline` rebuilds it from the CSV in
+# seconds, so there is no reason to carry 5 MB of binary in the repository.
+*.db
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+.streamlit/secrets.toml
