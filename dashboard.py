@@ -14,7 +14,7 @@ import plotly.express as px
 import streamlit as st
 
 from src import stats as analysis
-from src.config import ALPHA, DB_PATH, POPULATIONS
+from src.config import ALPHA, CSV_PATH, DB_PATH, POPULATIONS
 from src.db import query
 
 RESPONDER_COLOUR, NON_RESPONDER_COLOUR = "#2A9D8F", "#B25A7E"
@@ -27,6 +27,26 @@ POPULATION_COLOURS = ["#2A9D8F", "#3D6E9C", "#7D4180", "#C4813C", "#5E8C4E"]
 st.set_page_config(
     page_title="Teiko | Immune cell populations", page_icon="🧬", layout="wide"
 )
+
+
+@st.cache_resource(show_spinner=False)
+def ensure_database():
+    """Build the database if it is not there yet.
+
+    The .db file is a build artifact and is not committed, so a fresh deployment has
+    the CSV but no database and nothing has run `make pipeline`. Building it on first
+    load takes a couple of seconds and makes the app self-sufficient, whether it is
+    running on a hosted service or on a checkout where only `make dashboard` was run.
+    """
+    if DB_PATH.exists():
+        return DB_PATH
+
+    import load_data
+
+    if not CSV_PATH.exists():
+        return None
+    load_data.main()
+    return DB_PATH
 
 
 @st.cache_data(show_spinner=False)
@@ -109,14 +129,15 @@ def style_results(results):
     )
 
 
-if not DB_PATH.exists():
-    st.title("Immune cell populations")
-    st.error(
-        f"No database found at `{DB_PATH.name}`. Build it first by running "
-        "`make pipeline` (or `python load_data.py`) from the repository root."
-    )
-    st.stop()
-
+with st.spinner("Building the database from cell-count.csv…"):
+    if ensure_database() is None:
+        st.title("Immune cell populations")
+        st.error(
+            f"Neither `{DB_PATH.name}` nor `{CSV_PATH.name}` is present, so there is "
+            "nothing to show. Check out the repository with its data file and run "
+            "`make pipeline` from the root."
+        )
+        st.stop()
 
 meta = metadata()
 

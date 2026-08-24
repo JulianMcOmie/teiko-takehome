@@ -23,10 +23,11 @@ python load_data.py     # creates cell_counts.db in the repository root
 ```
 
 Requires Python 3.9+. `cell_counts.db` is deliberately not committed — it is a build
-artifact that `make pipeline` regenerates from the CSV in seconds.
+artifact that `make pipeline` regenerates from the CSV in seconds. The dashboard builds
+it automatically if it is missing, so `make dashboard` works on a fresh checkout without
+running the pipeline first.
 
-**Dashboard:** <!-- DASHBOARD_LINK -->_deployment link to be added_<!-- /DASHBOARD_LINK -->
-(runs locally with `make dashboard` in the meantime).
+**Dashboard:** https://teiko-takehome-cplgy56hfxailhbj3gpm8e.streamlit.app/
 
 ## What the pipeline produces
 
